@@ -33,13 +33,17 @@ def scoreHand = { hand1, hand2 ->
 	(hand1 - hand2 + 4) % 3 - 1
 }
 
+def add = { x, y ->
+	x + y
+}
+
 def scoreMatch = { hands1, hands2 ->
 	[hands1, hands2]
 		.transpose()
 		.collect({ hand ->
 			scoreHand(hand[0], hand[1])
 		})
-		.inject({ a, b -> a + b })
+		.inject(add)
 }
 
 def scoreTournament = { tournament ->
@@ -52,13 +56,8 @@ def scoreTournament = { tournament ->
 
 def rankTournament = { tournament ->
 	scoreTournament(tournament).collect({ player ->
-		player.inject({ a, b -> a + b })
+		player.inject(add)
 	})
-}
-
-def prettyPlayer = { player ->
-	def name = player.name.split('\\.')[1]
-	name.padRight(16) + ' ' + player.descr.padRight(32)
 }
 
 def collateTournament = { players ->

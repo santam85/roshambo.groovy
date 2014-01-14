@@ -60,7 +60,7 @@ def rankTournament = { tournament ->
 	})
 }
 
-def collateTournament = { players ->
+def getTournamentResults = { players ->
 	def tournament = playTournament(players)
 	[players, rankTournament(tournament), scoreTournament(tournament)]
 		.transpose()
@@ -85,4 +85,4 @@ def printTournament = { tournament ->
 }
 
 println('Backbase RoShamBo Tournament results\n')
-println(printTournament(collateTournament(thePlayers)))
+println(printTournament(getTournamentResults(thePlayers)))

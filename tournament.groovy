@@ -55,14 +55,14 @@ def scoreTournament = { tournament ->
 }
 
 def rankTournament = { tournament ->
-	scoreTournament(tournament).collect({ player ->
+	tournament.collect({ player ->
 		player.inject(add)
 	})
 }
 
 def getTournamentResults = { players ->
-	def tournament = playTournament(players)
-	[players, rankTournament(tournament), scoreTournament(tournament)]
+	def tournament = scoreTournament(playTournament(players))
+	[players, rankTournament(tournament), tournament]
 		.transpose()
 		.sort({ a, b -> a[1] <=> b[1]})
 		.reverse()

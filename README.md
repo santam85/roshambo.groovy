@@ -1,4 +1,4 @@
-roshambo.groovy
-===============
+BBRT
+====
 
-RoShamBo Tournament runner and bots
+Backbase RoShamBo Tournament runner and bots

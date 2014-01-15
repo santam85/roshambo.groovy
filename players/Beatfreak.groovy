@@ -7,9 +7,6 @@ class Beatfreak {
 		if (yourhands.size() == 0) 0 else {
 			def freq = [0, 1, 2].collect({ hand->
 				yourhands
-					.reverse()
-					// whole history too expensive
-					.take(15)
 					.findAll({ x ->
 						x == hand
 					})

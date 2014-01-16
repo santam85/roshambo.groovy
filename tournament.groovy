@@ -1,7 +1,14 @@
 def thePlayers = [
+	players.Bait,
 	players.Beatfreak,
+	players.DeBruijn,
 	players.Dunno,
+	players.Goldfish,
 	players.Rock,
+	players.Rot,
+	players.Shotgun,
+
+	// this is you
 	players.Player1
 ]
 
@@ -78,7 +85,7 @@ def prettyLine = { line ->
 }
 
 def printTournament = { tournament ->
-	'name            score   1     2     3    4\n' +
+	'name            score   1     2     3     4     5     6     7     8     9\n' +
 	tournament
 		.collect(prettyLine)
 		.join('\n')

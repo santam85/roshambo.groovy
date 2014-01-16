@@ -19,8 +19,12 @@ class Player1 {
 	static SCISSORS = 2
 	static descr = '[[this is you!]]'
 
+	static beat = { hand ->
+		(hand + 1) % 3
+	}
+
 	static hand = { myhands, yourhands ->
-		// TODO: add brilliant tactics here
+		// TODO: add brilliant strategy here
 		SCISSORS
-	};
-};
+	}
+}

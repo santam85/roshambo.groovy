@@ -6,11 +6,8 @@ class DeBruijn {
 
 	static hand = { myhands, yourhands ->
 		if (myhands.size() < len) 0 else {
-			def seq = myhands
-				.drop(myhands.size() - len)
-
 			// almost DeBruijn - no 2222222
-			(seq.first() + seq.last() + 1) % 3
+			(myhands[-len] + myhands[-1] + 1) % 3
 		}
 	};
 };

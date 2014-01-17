@@ -19,6 +19,8 @@ class Player1 {
 	static SCISSORS = 2
 	static descr = '[[this is you!]]'
 
+	static rnd = new Random()
+
 	static beat = { hand ->
 		(hand + 1) % 3
 	}

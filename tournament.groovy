@@ -10,6 +10,7 @@ def thePlayers = [
 	players.Foxtrot,
 	players.Henny,
 	players.Paisley,
+	players.Pat,
 	players.Lisa,
 	players.Pie,
 

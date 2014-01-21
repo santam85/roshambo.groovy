@@ -1,4 +1,19 @@
 def thePlayers = [
+	// players here
+	players.Yakko,
+
+	// cheatbots
+//	players.Matthew,
+
+	// 'new' dummy bots
+	players.Flat,
+	players.Foxtrot,
+	players.Henny,
+	players.Paisley,
+	players.Lisa,
+	players.Pie,
+
+	// dummy bots
 	players.Bait,
 	players.Beatfreak,
 	players.DeBruijn,
@@ -6,10 +21,7 @@ def thePlayers = [
 	players.Goldfish,
 	players.Rock,
 	players.Rot,
-	players.Shotgun,
-
-	// this is you
-	players.Player1
+	players.Shotgun
 ]
 
 def rounds = 1000

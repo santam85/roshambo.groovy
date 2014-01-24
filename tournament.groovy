@@ -4,28 +4,30 @@ def thePlayers = [
 
 	// cheatbots
 //	players.Matthew,
-
-	// 'new' dummy bots
-	players.Flat,
-	players.Foxtrot,
-	players.Henny,
-	players.Paisley,
-	players.Pat,
-	players.Lisa,
-	players.Pie,
+//	players.Metatron,
 
 	// dummy bots
 	players.Bait,
 	players.Beatfreak,
 	players.DeBruijn,
 	players.Dunno,
+	players.Flat,
+	players.Foxtrot,
 	players.Goldfish,
+	players.Henny,
+	players.Lisa,
+	players.Paisley,
+	players.Pat,
+	players.Pie,
 	players.Rock,
 	players.Rot,
 	players.Shotgun
 ]
 
 def rounds = 1000
+def size = thePlayers.size()
+def indices = 0 ..< size
+def grid = ([0] * size * size).collate(size)
 
 def playMatch = { player1, player2 ->
 	(1 .. rounds)
@@ -40,38 +42,42 @@ def playMatch = { player1, player2 ->
 		})
 }
 
-// double round-robin for now?
 def playTournament = { players ->
-	players.collect({ player1 ->
-		players.collect({ player2 ->
-			playMatch(player1, player2)
+	indices.collect({ index1 ->
+		indices.collect({ index2 ->
+			// only play top-right diagonal half
+			if (index1 >= index2) 0 else
+			playMatch(players[index1], players[index2])
 		})
 	})
 }
 
-def scoreHand = { hand1, hand2 ->
-	(hand1 - hand2 + 4) % 3 - 1
+def scoreHand = { hands ->
+	(hands[0] - hands[1] + 4) % 3 - 1
 }
 
 def add = { x, y ->
 	x + y
 }
 
-def scoreMatch = { hands1, hands2 ->
-	[hands1, hands2]
+def scoreMatch = { hands ->
+	if (hands == 0) 0 else
+	hands
 		.transpose()
-		.collect({ hand ->
-			scoreHand(hand[0], hand[1])
-		})
+		.collect(scoreHand)
 		.inject(add)
 }
 
-def scoreTournament = { tournament ->
-	tournament.collect({ player ->
-		player.collect({ match ->
-			scoreMatch(match[0], match[1])
-		})
-	})
+def scoreMatches = { tournament ->
+	for (x in indices) {
+		for (y in indices) {
+			if (x < y)
+				grid[x][y] = scoreMatch(tournament[x][y])
+			else if (x > y)
+				grid[x][y] = -grid[y][x]
+		}
+	}
+	grid
 }
 
 def rankTournament = { tournament ->
@@ -80,29 +86,45 @@ def rankTournament = { tournament ->
 	})
 }
 
-def getTournamentResults = { players ->
-	def tournament = scoreTournament(playTournament(players))
-	[players, rankTournament(tournament), tournament]
+def scoreTournament = { players, tournament ->
+	def scores = scoreMatches(tournament)
+	def totals = [indices, rankTournament(scores), players]
 		.transpose()
-		.sort({ a, b -> a[1] <=> b[1]})
-		.reverse()
+		.sort({ a, b -> b[1] <=> a[1]})
+		.transpose()
+	def order = totals[0]
+	def ranks = totals[1]
+	def orderedPlayers = totals[2]
+
+	def newscores = order.collect({ x ->
+		order.collect({ y ->
+			if (x==y) 'x' else
+			scores[x][y]
+		})
+	})
+
+	[orderedPlayers, ranks, newscores]
+		.transpose()
 }
 
 def prettyLine = { line ->
 	line[0].name.split('\\.')[1].padRight(16) + 
-	line[1].toString().padRight(8) + 
+	line[1].toString().padLeft(8) + 
 	line[2].collect({ item ->
-		item.toString().padRight(6)
+		item.toString().padLeft(6)
 	})
 	.join('')
 }
 
 def printTournament = { tournament ->
-	'name            score   1     2     3     4     5     6     7     8     9\n' +
+	'name               score' +
+	indices.collect({ index -> (index + 1).toString().padLeft(6)}).join('') +
+	'\n' +
 	tournament
 		.collect(prettyLine)
 		.join('\n')
 }
 
+def tournament = playTournament(thePlayers)
 println('Backbase RoShamBo Tournament results\n')
-println(printTournament(getTournamentResults(thePlayers)))
+println(printTournament(scoreTournament(thePlayers, tournament)))

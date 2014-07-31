@@ -2,6 +2,8 @@ def thePlayers = [
 	// players here
 	players.Yakko,
 	players.Santa,
+	players.Faisal,
+	players.Fubar,
 
 	// cheatbots
 //	players.Matthew,

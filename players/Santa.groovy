@@ -47,44 +47,48 @@ class Santa {
 			freq = [0, 0, 0]
 			PAPER
 		} else {
+			def hand;
+			def pattern = yourhands.join('');
+			if(pattern ==~ /^11120.*/){ 
+				def pie = [1,1,1,2,0,2,0,2,0,2,2,0,1,0,0];
+
+				return hand = this.beat(pie[yourhands.size()%pie.size()]) 
+			} else 
+			if(pattern ==~ /^12211.*$/) {
+				return hand = this.beat(myhands.last()+1);
+			}else
+			if(this.isfoxtrot(myhands,yourhands,1)){
+				def turn = myhands.size() + 1;
+				if(turn%2==0)
+					return hand = this.beat((yourhands[turn-2]+turn)%3);
+				else
+					return hand = rnd.nextInt(3);
+			} else
+			if(pattern ==~ /.*000$/){ hand = this.beat(ROCK) } else
+			if(pattern ==~ /.*111$/){ hand = this.beat(PAPER) } else
+			if(pattern ==~ /.*222$/){ hand = this.beat(SCISSORS) } else
+			if(pattern ==~ /.*012$/){ hand = this.beat(ROCK) } else
+			if(pattern ==~ /.*120$/){ hand = this.beat(PAPER) } else
+			if(pattern ==~ /.*201$/){ hand = this.beat(SCISSORS) } else 
+			{
+				freq[yourhands.last()] += 1
+				if (freq[ROCK] > 1.1*freq[PAPER] & freq[ROCK] > 1.1*freq[SCISSORS]) hand = this.beat(ROCK) else
+				if (freq[PAPER] > 1.1*freq[ROCK] & freq[PAPER] > 1.1*freq[SCISSORS]) hand = this.beat(PAPER) else
+				if (freq[SCISSORS] > 1.1*freq[ROCK]) hand = this.beat(SCISSORS) else
+				hand = this.beat(ROCK)
+			}
+
 			if(myhands.last() == this.beat(yourhands.last()))
 				balance++;
 			if(yourhands.last() == this.beat(myhands.last()))
 				balance--;
 
 			if (balance < -30) {
-				return rnd.nextInt(3);
+				hand = this.beat(hand);
 			}
 
-			def pattern = yourhands.join('');
-			if(pattern ==~ /^11120.*/){ 
-				def pie = [1,1,1,2,0,2,0,2,0,2,2,0,1,0,0];
+			return hand
 
-				this.beat(pie[yourhands.size()%pie.size()]) 
-			} else 
-			if(pattern ==~ /^12211.*$/) {
-				this.beat(myhands.last()+1);
-			}else
-			if(this.isfoxtrot(myhands,yourhands,1)){
-				def turn = myhands.size() + 1;
-				if(turn%2==0)
-					this.beat((yourhands[turn-2]+turn)%3);
-				else
-					rnd.nextInt(3);
-			} else
-			if(pattern ==~ /.*000$/){ this.beat(ROCK) } else
-			if(pattern ==~ /.*111$/){ this.beat(PAPER) } else
-			if(pattern ==~ /.*222$/){ this.beat(SCISSORS) } else
-			if(pattern ==~ /.*012$/){ this.beat(ROCK) } else
-			if(pattern ==~ /.*120$/){ this.beat(PAPER) } else
-			if(pattern ==~ /.*201$/){ this.beat(SCISSORS) } else 
-			{
-				freq[yourhands.last()] += 1
-				if (freq[ROCK] > 1.1*freq[PAPER] & freq[ROCK] > 1.1*freq[SCISSORS]) this.beat(ROCK) else
-				if (freq[PAPER] > 1.1*freq[ROCK] & freq[PAPER] > 1.1*freq[SCISSORS]) this.beat(PAPER) else
-				if (freq[SCISSORS] > 1.1*freq[ROCK]) this.beat(SCISSORS) else
-				this.beat(ROCK)
-			}
 		}
 	}
 }

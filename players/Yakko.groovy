@@ -26,31 +26,36 @@ class Yakko {
 	static hand = { myhands, yourhands ->
 		// TODO: Not so brilliant yet...
 
-        if (myhands.size() == 0) rnd.nextInt(3) else {
+        if ( myhands.size() == 0) rnd.nextInt(3) else {
             def CountRock = yourhands.count { it == ROCK }
             def CountPaper =  yourhands.count { it == PAPER }
             def CountScissors =  yourhands.count { it == SCISSORS }
 
-            switch( yourhands.size() ) {
-                case CountRock:
+            def map = [ROCK:CountRock, PAPER:CountPaper ,SCISSORS:CountScissors];
+            def sortedByValue = map.sort { a,b -> a.value <=> b.value }
+//            println(sortedByValue.size());
+
+            if ( yourhands.size() >= 7  ) {
+
+                def Route1 = ( yourhands.get(0));
+                def Route2 = ( yourhands.get(3));
+
+                if ( yourhands.size() == CountRock )     {
                     PAPER
-                    break
-                case CountPaper:
-                    SCISSORS
-                    break
-                case CountScissors:
-                    ROCK
-                    break
-                default:
-                    if ( CountRock > CountPaper ) {
-                        PAPER
-                    }  else if ( CountPaper > CountScissors ) {
-                        SCISSORS
-                    }   else if ( CountScissors > CountRock ) {
-                        ROCK
-                    }   else {
-                        (myhands.last() + 1 + rnd.nextInt(2)) % 3
-                    }
+                } else if ( yourhands.size() == CountPaper ) {
+                    SCISSORS;
+                } else if ( yourhands.size() == CountScissors ){
+                    ROCK;
+                } else if ( Route1 == Route2 ) {
+                    def play = ( yourhands.size() +1 ) % 3
+                    def Play = yourhands.get(play)
+                    Play
+                } else {
+                    rnd.nextInt(3)
+                }
+
+            } else {
+                rnd.nextInt(3)
             }
         }
 	}
